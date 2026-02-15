@@ -1,12 +1,6 @@
+# test_data.py
 import pytest
 import requests
-
-@pytest.fixture
-def mock_requests_get(mocker):
-    response_json = {"businesses":[{"name":"Teton Elementary"}]}
-    
-    # Patching requests.get to return a mocked response
-    mocker.patch.object(requests, 'get', return_value=MockResponse(response_json))
 
 class MockResponse:
     def __init__(self, json_data, status_code=200):
@@ -15,6 +9,18 @@ class MockResponse:
 
     def json(self):
         return self.json_data
+
+@pytest.fixture
+def mock_requests_get(monkeypatch):
+    # The fake response we want requests.get to return
+    response_json = {"businesses":[{"name":"Teton Elementary"}]}
+    mock_response = MockResponse(response_json)
+
+    # Patch requests.get to always return our mock_response
+    monkeypatch.setattr(requests, "get", lambda *args, **kwargs: mock_response)
+
+    # Optionally return the mock response to the test
+    return mock_response
 
 def test_data_endpoint(mock_requests_get):
     # Make the HTTP GET request
@@ -34,4 +40,3 @@ def test_data_endpoint(mock_requests_get):
     assert isinstance(first_business, dict)
     assert 'name' in first_business
     assert first_business['name'] == 'Teton Elementary'
-    # Add additional assertions as needed based on the expected response
