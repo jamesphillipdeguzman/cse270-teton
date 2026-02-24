@@ -66,7 +66,9 @@ The project includes automated smoke tests written in Python using:
 
 Result: Website opens in localhost 
 
-[Open Teton frontend version 1.6](http://127.0.0.1:5501/cse270/teton/1.6/index.html)
+[Open Teton localhost version 1.6](http://127.0.0.1:5501/cse270/teton/1.6/index.html)
+[Open Teton Live Site version 1.6](https://jamesphillipdeguzman.github.io/cse270-teton/index.html)
+
 
 ```bash
 python -m http.server 5501
